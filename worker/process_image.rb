@@ -40,10 +40,7 @@ coll.update({"_id" => post_entry["_id"]}, post_entry)
 original_image = Magick::Image.read(file_name).first
 
 [20, 100].each do |size|
-  original_image.resize_to_fill!(size,size).write("../images/#{size}_#{post_id}.jpg")
+  original_image.resize_to_fill!(size,size).write("../images/thumbnails/#{size}_#{post_id}.jpg")
 end
-
-new_100_filename = "../images/100_#{post_id}.jpg"
-new_20_filename = "../images/20_#{post_id}.jpg"
 
 puts post_id
