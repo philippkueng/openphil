@@ -95,7 +95,7 @@ var create_data_file = function(new_start_date){
       if (result){
         create_data_file(current_start_date.subtract('days', 1));
       } else { // no more items retrieved -> reached the beginning
-        fs.writeFile('data_count.json', JSON.stringify(data_count), function(err){
+        fs.writeFile('../data/data_count.json', JSON.stringify(data_count), function(err){
           if (err){
             throw err;
           } else {
