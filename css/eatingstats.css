@@ -1,0 +1,23 @@
+/*.chart div {
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+}*/
+
+#container{
+  margin: 40px auto;
+  width: 800px;
+}
+.chart rect{
+  stroke: white;
+  fill: red;
+}
+.chart text{
+  fill: white;
+}
+.chart text.rule{
+  fill: black;
+}
