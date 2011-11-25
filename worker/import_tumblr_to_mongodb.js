@@ -3,6 +3,8 @@ var config = require('../config'),
     Tumblr = require('tumblr').Tumblr,
     blog = new Tumblr(config.tumblr.subdomain + '.tumblr.com', config.tumblr.api_key);
     
+require('../db/schema');
+    
 var util = require('util'),
     exec = require('child_process').exec;
     
@@ -10,26 +12,12 @@ var ruby_path = '/Users/philippkueng/.rvm/rubies/ruby-1.9.2-p290/bin/ruby';
 
 // -- MONGODB --
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    ObjectId = mongoose.ObjectId;
+var mongoose = require('mongoose');
+    // Schema = mongoose.Schema,
+    // ObjectId = mongoose.ObjectId;
     
-mongoose.connect('mongodb://localhost/eatingstats');
-    
-var ItemsSchema = new Schema({
-      post_id: {type: String, index: {unique: true}},
-      title: {type: String},
-      post_date: {type: Date},
-      keys: {type: [String]},
-      caption: {type: String},
-      post_url: {type: String},
-      image_url: {type: String},
-      image_height: {type: Number},
-      image_width: {type: Number},
-      image_date: {type: Date}
-    });
-
-var Items = mongoose.model('Items', ItemsSchema); 
+db = mongoose.connect('mongodb://localhost/eatingstats');
+Items = db.model('Items');
 
 // -- process a single item all the way --
 
