@@ -28,11 +28,27 @@ var process_item = function(post, callback){
         post_id: post.id.toString(),
         title: post.title,
         keys: post.tags,
-        caption: post.caption,
+        // caption: post.caption,
         post_url: post.post_url,
         image_url: post.photos[0].original_size.url
       });
-      return item;
+      
+      if(post.caption !== null && typeof post.caption !== 'undefined' && post.caption !== ""){
+        item.caption = post.caption;
+        // parse the date and weight information
+        var regex = /\<p\>(\d{4})\-(\d{2})\-(\d{2})(\&\#160\;\:\W)(\d{2}\.\d{1,2})/;
+        var match = regex.exec(post.caption);
+        if(match === null){
+          console.log(err);
+          throw err;
+        } else {
+          item.weight = match[5];
+          item.weight_date = new Date(parseInt(match[1]), parseInt(match[2]) - 1, parseInt(match[3]));
+          return item;
+        }
+      } else {
+        return item;
+      }
     },
     function save_item_to_db(err, item){
       item.save(this);
