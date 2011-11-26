@@ -53,7 +53,7 @@ var process_a_day = function(start_date, callback){
       } else {
         if(results.length > 0){
           var day = {
-            date: results[0].image_date,
+            date: start_date.native(),
             count: results.length
           };
           data_count.push(day);
