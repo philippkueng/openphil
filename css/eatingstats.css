@@ -13,11 +13,14 @@
 }
 .chart rect{
   stroke: white;
-  fill: red;
+  fill: #2d578b;
 }
 .chart text{
   fill: white;
 }
 .chart text.rule{
+  fill: black;
+}
+.chart text.days{
   fill: black;
 }
