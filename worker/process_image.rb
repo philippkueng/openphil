@@ -31,6 +31,17 @@ if exif.date_time_original
   post_entry['image_date'] = exif.date_time_original
 end
 
+# puts post_entry.keys
+# puts post_entry.keys.include?('weight')
+
+if post_entry.keys.include?('weight') == false
+  post_entry['important_date'] = post_entry["image_date"]
+end
+
+# if post_entry['keys'] == 'weight'
+#   puts 'Date item found...'
+# end
+
 coll.update({"_id" => post_entry["_id"]}, post_entry)
 
 #

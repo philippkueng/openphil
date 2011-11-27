@@ -16,8 +16,9 @@ ItemsSchema = new Schema(
   image_height: Number
   image_width: Number
   image_date: Date
-  weight_date: String
+  weight_date: Date
   weight: Number
+  important_date: Date
 )
 
 mongoose.model('Items', ItemsSchema)

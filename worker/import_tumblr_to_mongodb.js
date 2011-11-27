@@ -44,6 +44,7 @@ var process_item = function(post, callback){
         } else {
           item.weight = match[5];
           item.weight_date = new Date(parseInt(match[1]), parseInt(match[2]) - 1, parseInt(match[3]));
+          item.important_date = item.weight_date;
           return item;
         }
       } else {
@@ -132,10 +133,10 @@ var fetch_photos_from_tumblr = function(){
 
 fetch_photos_from_tumblr();
 
-// blog.photo({limit: 20}, function(err, response){
+// blog.photo({limit: 1}, function(err, response){
 //   console.log(err);
-//   // console.log(response);
-//   console.log(response.posts[0].photos[0].alt_sizes);
+//   console.log(response);
+//   // console.log(response.posts[0].photos[0].alt_sizes);
 // });
 
 
