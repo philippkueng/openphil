@@ -13,7 +13,11 @@
 }
 .chart rect{
   stroke: white;
-  fill: #2d578b;
+  fill: #35478C;
+/*  fill: url(../images/thumbnails/20_12939271197.jpg);*/
+}
+.chart rect.weight{
+  fill: #4E7AC7;
 }
 .chart text{
   fill: white;
@@ -23,4 +27,7 @@
 }
 .chart text.days{
   fill: black;
+}
+.chart text.weight{
+  font-size: 9px;
 }
