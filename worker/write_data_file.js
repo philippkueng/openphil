@@ -21,9 +21,21 @@ var data_count = [];
  */
 var fetch_a_day = function(start_date, end_date, callback){
   Items
-    .where('image_date').gte(start_date.native())
-    .where('image_date').lt(end_date.native())
+    .where('important_date').gte(start_date.native())
+    .where('important_date').lt(end_date.native())
     .where('keys').nin(['weight'])
+    .find(callback);
+};
+
+
+/**
+ * fetch weight entries within the date range from the database
+ */
+var fetch_a_day_weight_entries = function(start_date, end_date, callback){
+  Items
+    .where('important_date').gte(start_date.native())
+    .where('important_date').lt(end_date.native())
+    .where('keys').in(['weight'])
     .find(callback);
 };
 
@@ -32,16 +44,18 @@ var fetch_a_day = function(start_date, end_date, callback){
  * process a day -> add it the json file
  */
 var process_a_day = function(start_date, callback){
+  var day = {};
+  var end_date = moment();
+  var food_items = false;
   Step(
     function _create_end_date(){
-      var end_date = moment();
       end_date.year(start_date.year());
       end_date.month(start_date.month());
       end_date.date(start_date.date());
       end_date.hours(start_date.hours());
       end_date.minutes(start_date.minutes());
       end_date.seconds(start_date.seconds());
-      end_date.add('days',1);
+      end_date.add('days',1).subtract('minutes', 1);
       return end_date;
     },
     function _fetch_a_day(err, end_date){
@@ -52,19 +66,39 @@ var process_a_day = function(start_date, callback){
         throw err;
       } else {
         if(results.length > 0){
-          var day = {
-            date: start_date.native(),
+          food_items = true;
+          day = {
+            date: new Date(start_date.native()),
             count: results.length
           };
+          return true;
+        } else {
+          fetch_weight_entries = false;
+          return false;
+        }
+      }
+    },
+    function _fetch_weight_for_day(err, result){
+      fetch_a_day_weight_entries(start_date, end_date, this);
+    },
+    function _add_weight_to_file(err, results){
+      if(err){
+        throw err;
+      } else {
+        if (results.length > 0){
+          day.weight = results[0].weight;
           data_count.push(day);
           return true;
         } else {
+          if(day !== null && typeof day !== 'undefined' && food_items){
+            data_count.push(day);
+          }
           return false;
         }
       }
     },
     function _finish(err, result){
-      callback(err, result, start_date);
+      callback(err, food_items, start_date);
     }
   )
 };
