@@ -44,7 +44,7 @@ var fetch_a_day_weight_entries = function(start_date, end_date, callback){
  * process a day -> add it the json file
  */
 var process_a_day = function(start_date, callback){
-  var day = {};
+  var day = {items: []};
   var end_date = moment();
   var food_items = false;
   Step(
@@ -69,7 +69,8 @@ var process_a_day = function(start_date, callback){
           food_items = true;
           day = {
             date: new Date(start_date.native()),
-            count: results.length
+            count: results.length,
+            items: results
           };
           return true;
         } else {
@@ -147,5 +148,5 @@ var create_data_file = function(new_start_date){
 /**
  * start the script and create the json file
  */
-create_data_file()
+create_data_file();
 
