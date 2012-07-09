@@ -19,10 +19,9 @@ app.listen(port, function() {
 // subscribe to the remote hub
 
 var nubnub = require('nubnub');
-var Client = nubnub.Client;
-var cli = Client.build({
+var cli = nubnub.client({
 	hub: "http://tumblr.superfeedr.com",
-	topic: "http://everrouter.tumblr.com",
+	topic: "http://everrouter.tumblr.com/rss",
 	callback: "http://eatingstats.herokuapp.com/pubsub"
 });
 
