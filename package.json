@@ -1,0 +1,18 @@
+{
+  "author": "Philipp Küng <github@philippkueng.ch> (http://philippkueng.ch)",
+  "name": "eatingstats",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:philippkueng/eatingstats.git"
+  },
+  "engines": {
+    "node": "~0.6.11"
+  },
+  "dependencies": {
+    "blitline": "1.1.6",
+    "express": "2.5.11"
+    },
+  "devDependencies": {},
+  "optionalDependencies": {}
+}
