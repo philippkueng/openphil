@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "blitline": "1.1.6",
-    "express": "2.5.11"
+    "express": "2.5.11",
+    "nubnub": "0.1.0"
     },
   "devDependencies": {},
   "optionalDependencies": {}
