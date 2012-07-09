@@ -7,7 +7,8 @@ app.get('/', function(request, response) {
 });
 
 app.get('/pubsub', function(request, response) {
-  response.send('pubsub route');
+
+  response.send(request.query['hub.challenge']);
   console.log('got a message from the hub');
 });
 
