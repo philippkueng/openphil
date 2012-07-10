@@ -12,6 +12,11 @@ app.get('/pubsub', function(request, response) {
   console.log('got a message from the hub');
 });
 
+app.post('/pubsub', function(request, response){
+  response.send('thanks');
+  console.log(request.body);
+});
+
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
