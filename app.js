@@ -43,8 +43,12 @@ client.on('connected', function(){
 
 	// Subscribe to feeds
 	client.subscribe("http://everrouter.tumblr.com/rss", function(err, feed){
-		console.log('Subscribed to Feed!');
+		console.log('Subscribed to everrouter Feed!');
 	});
+
+  client.subscribe("http://eatingstats.tumblr.com/rss", function(err, feed){
+    console.log('Subscribed to eatingstats Feed!');
+  });
 
 });
 
