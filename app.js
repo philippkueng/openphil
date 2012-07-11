@@ -2,11 +2,11 @@ var express = require('express');
 
 var app = express.createServer(express.logger());
 
-app.configure(function(){
-    app.use(express.methodOverride());
-    app.use(express.bodyParser());
-    app.use(app.router);
-});
+// app.configure(function(){
+//     app.use(express.methodOverride());
+//     app.use(express.bodyParser());
+//     app.use(app.router);
+// });
 
 app.get('/', function(request, response) {
   response.send('Hello World from eatingstats!');
