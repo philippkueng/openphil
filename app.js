@@ -20,10 +20,7 @@ app.get('/pubsub', function(request, response) {
 
 app.post('/pubsub', function(request, response){
   response.send('thanks');
-
-  console.log(request);
-  console.log('-------BODY--------');
-  console.log(request.body);
+  console.log('someone POSTed to /pubsub');
 });
 
 var port = process.env.PORT || 5000;
@@ -47,6 +44,10 @@ client.on('connected', function(){
 
   client.subscribe("http://eatingstats.tumblr.com/rss", function(err, feed){
     console.log('Subscribed to eatingstats Feed!');
+  });
+
+  client.subscribe("http://philippkueng.tumblr.com/rss", function(err, feed){
+    console.log('Subscribed to philippkueng Feed!');
   });
 
 });
