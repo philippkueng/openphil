@@ -10,6 +10,9 @@ var app = express.createServer(express.logger());
 // });
 
 app.get('/', function(request, response) {
+
+  console.log(request);
+
   response.send('Hello World from eatingstats!');
 });
 
