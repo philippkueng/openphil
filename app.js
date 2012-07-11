@@ -1,4 +1,5 @@
-var express = require('express');
+var express = require('express'),
+	superfeedr = require('superfeedr').Superfeedr;
 
 var app = express.createServer(express.logger());
 
@@ -31,21 +32,43 @@ app.listen(port, function() {
   console.log("Listening on " + port);
 });
 
+
+////////// SUBSCRIBE TO THE REMOTE HUB //////////
+
+var client = new superfeedr(process.env.SUPERFEEDR_LOGIN, process.env.SUPERFEEDR_PASSWORD);
+
+// Fire when connected to superfeedr
+client.on('connected', function(){
+	console.log('Connected to Superfeedr!');
+
+	// Subscribe to feeds
+	client.subscribe("http://everrouter.tumblr.com/rss", function(err, feed){
+		console.log('Subscribed to Feed!');
+	});
+
+});
+
+client.on('notification', function(notification){
+  console.log('processing the notification...');
+  console.log('-------- NOTIFICATION --------');
+	console.log(notification);
+});
+
 // subscribe to the remote hub
 
-var nubnub = require('nubnub');
-var cli = nubnub.client({
-	hub: "http://tumblr.superfeedr.com",
-	topic: "http://everrouter.tumblr.com/rss",
-	callback: "http://eatingstats.herokuapp.com/pubsub"
-});
+// var nubnub = require('nubnub');
+// var cli = nubnub.client({
+// 	hub: "http://tumblr.superfeedr.com",
+// 	topic: "http://everrouter.tumblr.com/rss",
+// 	callback: "http://eatingstats.herokuapp.com/pubsub"
+// });
 
-console.log("subscribing....");
-cli.subscribe(function(err, resp, body){
-	if(err){
-		console.log(err);
-	} else {
-		console.log(resp.statusCode + ': ' + body);
-	}
-});
+// console.log("subscribing....");
+// cli.subscribe(function(err, resp, body){
+// 	if(err){
+// 		console.log(err);
+// 	} else {
+// 		console.log(resp.statusCode + ': ' + body);
+// 	}
+// });
 
