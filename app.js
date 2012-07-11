@@ -3,17 +3,13 @@ var express = require('express'),
 
 var app = express.createServer(express.logger());
 
-// app.configure(function(){
-//     app.use(express.methodOverride());
-//     app.use(express.bodyParser());
-//     app.use(app.router);
-// });
+app.get('/', function(req, res) {
 
-app.get('/', function(request, response) {
+  if(req.headers && req.headers['user-agent'] && req.headers['user-agent'] === 'Pingdom.com_bot_version_1.4_(http://www.pingdom.com)'){
+    console.log('request from pingdom');
+  }
 
-  console.log(request);
-
-  response.send('Hello World from eatingstats!');
+  res.send('Hello World from eatingstats!');
 });
 
 app.get('/pubsub', function(request, response) {
@@ -60,22 +56,4 @@ client.on('notification', function(notification){
   console.log('-------- NOTIFICATION --------');
 	console.log(notification);
 });
-
-// subscribe to the remote hub
-
-// var nubnub = require('nubnub');
-// var cli = nubnub.client({
-// 	hub: "http://tumblr.superfeedr.com",
-// 	topic: "http://everrouter.tumblr.com/rss",
-// 	callback: "http://eatingstats.herokuapp.com/pubsub"
-// });
-
-// console.log("subscribing....");
-// cli.subscribe(function(err, resp, body){
-// 	if(err){
-// 		console.log(err);
-// 	} else {
-// 		console.log(resp.statusCode + ': ' + body);
-// 	}
-// });
 
