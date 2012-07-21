@@ -12,7 +12,8 @@
   "dependencies": {
     "blitline": "1.1.6",
     "express": "2.5.11",
-    "superfeedr": "0.0.6"
+    "superfeedr": "0.0.6",
+    "superagent": "0.5.0"
     },
   "devDependencies": {},
   "optionalDependencies": {}
