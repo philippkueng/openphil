@@ -40,17 +40,49 @@ app.listen(port, function() {
 var easyimage = require('easyimage'),
     request = require('request'),
     fs = require('fs'),
-    util = require('util');
+    util = require('util'),
+    knox = require('knox');
 
+var client = knox.createClient({
+  key: config.aws.key,
+  secret: config.aws.secret,
+  bucket: config.aws.bucket
+});
+
+// FETCH IMAGE
 request({uri: 'http://24.media.tumblr.com/tumblr_m3qzl4kDe41r6f6iuo1_1280.jpg', encoding: 'binary'}, function(error, response, body){
   if(error){
     console.log(error);
   } else {
+
+    // SAVE IMAGE TO DISK
     fs.writeFile('image.jpg', body, "binary", function(err){
       if(err){
         console.log(err);
       } else {
         console.log('image saved to disk');
+
+        // CROP IMAGE
+        easyimage.thumbnail({
+          src: 'image.jpg',
+          dst: './image_thumbnail.jpg',
+          width: 300,
+          height: 300
+        }, function(err, image){
+
+          // UPLOAD IMAGE TO S3
+          client.putFile('image_thumbnail.jpg', '/image_thumbnail.jpg', function(err, res){
+            if(err){
+              console.log(err);
+            } else {
+              console.log('thumbnail uploaded successfully');
+              // console.log(res);
+            }
+          });
+
+        });
+
+
       }
     });
   }
