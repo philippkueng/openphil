@@ -33,3 +33,25 @@ var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
+
+
+////////// DOWNLOAD & CONVERT SAMPLE //////////
+
+var easyimage = require('easyimage'),
+    request = require('request'),
+    fs = require('fs'),
+    util = require('util');
+
+request({uri: 'http://24.media.tumblr.com/tumblr_m3qzl4kDe41r6f6iuo1_1280.jpg', encoding: 'binary'}, function(error, response, body){
+  if(error){
+    console.log(error);
+  } else {
+    fs.writeFile('image.jpg', body, "binary", function(err){
+      if(err){
+        console.log(err);
+      } else {
+        console.log('image saved to disk');
+      }
+    });
+  }
+});
