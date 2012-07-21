@@ -1,5 +1,5 @@
 var express = require('express'),
-	superfeedr = require('superfeedr').Superfeedr;
+    config = require('./config');
 
 var app = express.createServer(express.logger());
 
@@ -29,49 +29,61 @@ app.get('/', function(req, res) {
   res.sendfile('public/index.html');
 });
 
-app.get('/pubsub', function(request, response) {
-
-  response.send(request.query['hub.challenge']);
-  console.log('got a message from the hub');
-});
-
-app.post('/pubsub', function(request, response){
-  response.send('thanks');
-  console.log('someone POSTed to /pubsub');
-});
-
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
 
 
-////////// SUBSCRIBE TO THE REMOTE HUB //////////
+////////// DOWNLOAD & CONVERT SAMPLE //////////
 
-var client = new superfeedr(process.env.SUPERFEEDR_LOGIN, process.env.SUPERFEEDR_PASSWORD);
+var easyimage = require('easyimage'),
+    request = require('request'),
+    fs = require('fs'),
+    util = require('util'),
+    knox = require('knox');
 
-// Fire when connected to superfeedr
-client.on('connected', function(){
-	console.log('Connected to Superfeedr!');
-
-	// Subscribe to feeds
-	client.subscribe("http://everrouter.tumblr.com/rss", function(err, feed){
-		console.log('Subscribed to everrouter Feed!');
-	});
-
-  client.subscribe("http://eatingstats.tumblr.com/rss", function(err, feed){
-    console.log('Subscribed to eatingstats Feed!');
-  });
-
-  client.subscribe("http://philippkueng.tumblr.com/rss", function(err, feed){
-    console.log('Subscribed to philippkueng Feed!');
-  });
-
+var client = knox.createClient({
+  key: config.aws.key,
+  secret: config.aws.secret,
+  bucket: config.aws.bucket
 });
 
-client.on('notification', function(notification){
-  console.log('processing the notification...');
-  console.log('-------- NOTIFICATION --------');
-	console.log(notification);
-});
+// FETCH IMAGE
+request({uri: 'http://24.media.tumblr.com/tumblr_m3qzl4kDe41r6f6iuo1_1280.jpg', encoding: 'binary'}, function(error, response, body){
+  if(error){
+    console.log(error);
+  } else {
 
+    // SAVE IMAGE TO DISK
+    fs.writeFile('image.jpg', body, "binary", function(err){
+      if(err){
+        console.log(err);
+      } else {
+        console.log('image saved to disk');
+
+        // CROP IMAGE
+        easyimage.thumbnail({
+          src: 'image.jpg',
+          dst: './image_thumbnail.jpg',
+          width: 300,
+          height: 300
+        }, function(err, image){
+
+          // UPLOAD IMAGE TO S3
+          client.putFile('image_thumbnail.jpg', '/image_thumbnail.jpg', function(err, res){
+            if(err){
+              console.log(err);
+            } else {
+              console.log('thumbnail uploaded successfully');
+              // console.log(res);
+            }
+          });
+
+        });
+
+
+      }
+    });
+  }
+});
