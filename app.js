@@ -43,12 +43,28 @@ var easyimage = require('easyimage'),
     util = require('util'),
     knox = require('knox'),
     _ = require('underscore'),
-    ExifImage = require('exif').ExifImage;
+    ExifImage = require('exif').ExifImage,
+    Tumblr = require('tumblr').Tumblr;
 
 var client = knox.createClient({
   key: config.aws.key,
   secret: config.aws.secret,
   bucket: config.aws.bucket
+});
+
+// FETCH LATEST ENTRIES FROM TUMBLR FOR eatingstats
+var blog = new Tumblr(config.tumblr.subdomain + '.tumblr.com', config.tumblr.api_key);
+blog.photo({limit: 20}, function(err, response){
+  if(err){
+    console.log(err);
+  } else {
+
+    var result = _.map(response.posts, function(post){
+      return post;
+    });
+
+    // console.log(result);
+  }
 });
 
 // FETCH IMAGE
