@@ -41,12 +41,30 @@ var easyimage = require('easyimage'),
     request = require('request'),
     fs = require('fs'),
     util = require('util'),
-    knox = require('knox');
+    knox = require('knox'),
+    _ = require('underscore'),
+    ExifImage = require('exif').ExifImage,
+    Tumblr = require('tumblr').Tumblr;
 
 var client = knox.createClient({
   key: config.aws.key,
   secret: config.aws.secret,
   bucket: config.aws.bucket
+});
+
+// FETCH LATEST ENTRIES FROM TUMBLR FOR eatingstats
+var blog = new Tumblr(config.tumblr.subdomain + '.tumblr.com', config.tumblr.api_key);
+blog.photo({limit: 20}, function(err, response){
+  if(err){
+    console.log(err);
+  } else {
+
+    var result = _.map(response.posts, function(post){
+      return post;
+    });
+
+    // console.log(result);
+  }
 });
 
 // FETCH IMAGE
@@ -76,7 +94,42 @@ request({uri: 'http://24.media.tumblr.com/tumblr_m3qzl4kDe41r6f6iuo1_1280.jpg', 
               console.log(err);
             } else {
               console.log('thumbnail uploaded successfully');
-              // console.log(res);
+              
+              // EXTRACT EXIF INFORMATION
+              new ExifImage({image: 'image.jpg'}, function(error, image){
+                if(error){
+                  console.log(error);
+                } else {
+
+                  // CLEAN UP EXIF OBJECT BY REMOVING THE BUFFERS & TRANSFORMING THE ARRAYS INTO A HASH
+                  var imageExif = {};
+                  var globalKeys = ['image', 'exif', 'gps'];
+
+                  _.each(globalKeys, function(globalKey){
+                    _.each(image[globalKey], function(obj){
+
+                      var keys = _.keys(obj);
+
+                      _.each(keys, function(key){
+                        if(Buffer.isBuffer(obj[key])){
+                          delete obj[key];
+                        }
+                      });
+
+                      imageExif[obj.tagName] = obj;
+                      delete imageExif[obj.tagName].tagName;
+                    });
+                  });
+
+                  fs.writeFileSync('image.json', JSON.stringify(imageExif), 'utf8');
+
+                  console.log(imageExif);
+
+                  // SAVE METADATA INTO THE DATABASE
+                  // --> TODO
+
+                }
+              });
             }
           });
 
