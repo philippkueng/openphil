@@ -1,17 +1,36 @@
 var express = require('express'),
+    mongodb = require('monogdb'),
     config = require('./config');
+
+// ---
+// MongoDB Configuration
+// ---
+
+var items_collection = null;
+
+mongodb.connect(config.mongodb, function(err, connection){
+  connection.collection('items', function(err, collection){
+    items_collection = collection;
+    console.log('database connection established successfully.');
+  });
+});
+
+
+// ---
+// Application
+// ---
 
 var app = express.createServer(express.logger());
 
 app.configure(function(){
-    app.use(express.methodOverride());
-    app.use(express.bodyParser());
-    app.use(app.router);
+  app.use(express.methodOverride());
+  app.use(express.bodyParser());
+  app.use(app.router);
 });
 
 app.configure('development', function(){
-    app.use(express.static(__dirname + '/public'));
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  app.use(express.static(__dirname + '/public'));
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 app.configure('production', function(){

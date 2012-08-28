@@ -14,5 +14,6 @@ module.exports = {
   tumblr: {
     subdomain: process.env.TUMBLR_SUBDOMAIN ? process.env.TUMBLR_SUBDOMAIN : '',
     api_key: process.env.TUMBLR_API_KEY ? process.env.TUMBLR_API_KEY : ''
-  }
+  },
+  mongodb: process.env.MONGOLAB_URI ? process.env.MONGOLAB_URI : ''
 };
