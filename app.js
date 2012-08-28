@@ -1,5 +1,5 @@
 var express = require('express'),
-    mongodb = require('monogdb'),
+    mongodb = require('mongodb'),
     config = require('./config');
 
 // ---
