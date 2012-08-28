@@ -6,7 +6,8 @@ var config = require('../config'),
 require('../db/schema');
     
 var util = require('util'),
-    exec = require('child_process').exec;
+    exec = require('child_process').exec,
+    fs = require('fs');
     
 var ruby_path = '/Users/philippkueng/.rvm/rubies/ruby-1.9.2-p290/bin/ruby';
 
@@ -24,6 +25,8 @@ Items = db.model('Items');
 var process_item = function(post, callback){
   Step(
     function convert_post_to_item(){
+      console.log(post.photos[0].original_size.url);
+
       var item = new Items({
         post_id: post.id.toString(),
         title: post.title,
@@ -67,6 +70,10 @@ var process_item = function(post, callback){
       var file_url = item.image_url;
       var file_name = item.post_id + '.jpg'
       
+      // make use of downloading files with a list -> thus only starting the process once for 20 downloads
+      // http://www.cyberciti.biz/tips/linux-wget-your-ultimate-command-line-downloader.html
+      // call -> wget -i downloads.txt
+
       child = exec('/usr/local/bin/wget ' + file_url + ' -O ' + config.system.save_images_in_folder + file_name + ' -nv', this);
     },
     function extract_exif_and_create_thumbnails(err, stderr, stdout){
@@ -95,6 +102,7 @@ var fetch_photos_from_tumblr = function(){
       blog.photo({limit: 20, offset: current_offset}, this);
     },
     function process_each_item(err, response){
+
       var group = this.group();
       var post_counter = 1;
       if(items_in_tumblr === null){ items_in_tumblr = response.blog.posts; }
