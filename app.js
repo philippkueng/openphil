@@ -1,6 +1,16 @@
 var express = require('express'),
     mongodb = require('mongodb'),
+    util = require('util'),
+    events = require('events').EventEmitter,
+    Worker = require('./lib/worker'),
     config = require('./config');
+
+// ---
+// Initialize the EventEmitter based Worker
+// ---
+
+util.inherits(Worker, events);
+var worker = new Worker(util, events);
 
 // ---
 // MongoDB Configuration
@@ -39,10 +49,17 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
+// ---
+// Routes
+// ---
+
 app.get('/', function(req, res) {
 
   if(req.headers && req.headers['user-agent'] && req.headers['user-agent'] === 'Pingdom.com_bot_version_1.4_(http://www.pingdom.com)'){
-    console.log('request from pingdom');
+    worker.check_tumblr({
+      request: req,
+      response: res
+    })
   }
 
   res.sendfile('public/index.html');
