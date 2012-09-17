@@ -3,6 +3,7 @@ var express = require('express'),
     util = require('util'),
     events = require('events').EventEmitter,
     Worker = require('./lib/worker'),
+    Tumblr = require('tumblr').Tumblr,
     config = require('./config');
 
 // ---
@@ -25,6 +26,12 @@ mongodb.connect(config.mongodb, function(err, connection){
   });
 });
 
+
+// ---
+// Tumblr Configuration
+// ---
+
+var tumblog = new Tumblr(config.tumblr.subdomain + '.tumblr.com', config.tumblr.api_key);
 
 // ---
 // Application
@@ -58,8 +65,10 @@ app.get('/', function(req, res) {
   if(req.headers && req.headers['user-agent'] && req.headers['user-agent'] === 'Pingdom.com_bot_version_1.4_(http://www.pingdom.com)'){
     worker.check_tumblr({
       request: req,
-      response: res
-    })
+      response: res,
+      items_collection: items_collection,
+      tumblog: tumblog
+    });
   }
 
   res.sendfile('public/index.html');
@@ -85,8 +94,7 @@ var easyimage = require('easyimage'),
     util = require('util'),
     knox = require('knox'),
     _ = require('underscore'),
-    ExifImage = require('exif').ExifImage,
-    Tumblr = require('tumblr').Tumblr;
+    ExifImage = require('exif').ExifImage;
 
 var client = knox.createClient({
   key: config.aws.key,
@@ -95,17 +103,13 @@ var client = knox.createClient({
 });
 
 // FETCH LATEST ENTRIES FROM TUMBLR FOR eatingstats
-var blog = new Tumblr(config.tumblr.subdomain + '.tumblr.com', config.tumblr.api_key);
 blog.photo({limit: 20}, function(err, response){
   if(err){
     console.log(err);
   } else {
-
     var result = _.map(response.posts, function(post){
       return post;
     });
-
-    // console.log(result);
   }
 });
 
