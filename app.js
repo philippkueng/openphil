@@ -103,15 +103,15 @@ var client = knox.createClient({
 });
 
 // FETCH LATEST ENTRIES FROM TUMBLR FOR eatingstats
-blog.photo({limit: 20}, function(err, response){
-  if(err){
-    console.log(err);
-  } else {
-    var result = _.map(response.posts, function(post){
-      return post;
-    });
-  }
-});
+// blog.photo({limit: 20}, function(err, response){
+//   if(err){
+//     console.log(err);
+//   } else {
+//     var result = _.map(response.posts, function(post){
+//       return post;
+//     });
+//   }
+// });
 
 // FETCH IMAGE
 request({uri: 'http://24.media.tumblr.com/tumblr_m3qzl4kDe41r6f6iuo1_1280.jpg', encoding: 'binary'}, function(error, response, body){
