@@ -4,6 +4,7 @@ var express = require('express'),
     events = require('events').EventEmitter,
     Worker = require('./lib/worker'),
     Tumblr = require('tumblr').Tumblr,
+    im = require('imagemagick'),
     config = require('./config');
 
 // ---
@@ -176,6 +177,14 @@ request({uri: 'http://24.media.tumblr.com/tumblr_m3qzl4kDe41r6f6iuo1_1280.jpg', 
 
                 }
               });
+
+              // EXTRACT EXIF WITH IMAGEMAGICK
+              im.readMetadata('image.jpg', function(err, metadata){
+                if (err) throw err;
+                console.log(metadata.exif);
+                // console.log('Shot at '+metadata.exif.dateTimeOriginal);
+              })
+              
             }
           });
 
