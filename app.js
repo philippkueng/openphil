@@ -4,7 +4,6 @@ var express = require('express'),
     events = require('events').EventEmitter,
     Worker = require('./lib/worker'),
     Tumblr = require('tumblr').Tumblr,
-    im = require('imagemagick'),
     config = require('./config');
 
 // ---
@@ -75,6 +74,15 @@ app.get('/', function(req, res) {
   res.sendfile('public/index.html');
 });
 
+app.get('/check', function(req, res){
+  worker.check_tumblr({
+    request: req,
+    response: res,
+    items_collection: items_collection,
+    tumblog: tumblog
+  });
+});
+
 app.get('/items_meta', function(req, res){
   items_collection.find({}).count(function(err, coll_count){
     res.send({count: coll_count});
@@ -89,109 +97,98 @@ app.listen(port, function() {
 
 ////////// DOWNLOAD & CONVERT SAMPLE //////////
 
-var easyimage = require('easyimage'),
-    request = require('request'),
-    fs = require('fs'),
-    util = require('util'),
-    knox = require('knox'),
-    _ = require('underscore'),
-    ExifImage = require('exif').ExifImage;
+// var easyimage = require('easyimage'),
+//     request = require('request'),
+//     fs = require('fs'),
+//     util = require('util'),
+//     knox = require('knox'),
+//     _ = require('underscore'),
+//     ExifImage = require('exif').ExifImage;
 
-var client = knox.createClient({
-  key: config.aws.key,
-  secret: config.aws.secret,
-  bucket: config.aws.bucket
-});
+// var client = knox.createClient({
+//   key: config.aws.key,
+//   secret: config.aws.secret,
+//   bucket: config.aws.bucket
+// });
 
-// FETCH LATEST ENTRIES FROM TUMBLR FOR eatingstats
-// blog.photo({limit: 20}, function(err, response){
-//   if(err){
-//     console.log(err);
+// // FETCH IMAGE
+// request({uri: 'http://24.media.tumblr.com/tumblr_m3qzl4kDe41r6f6iuo1_1280.jpg', encoding: 'binary'}, function(error, response, body){
+//   if(error){
+//     console.log(error);
 //   } else {
-//     var result = _.map(response.posts, function(post){
-//       return post;
+
+//     // SAVE IMAGE TO DISK
+//     fs.writeFile('image.jpg', body, "binary", function(err){
+//       if(err){
+//         console.log(err);
+//       } else {
+//         console.log('image saved to disk');
+
+//         // CROP IMAGE
+//         easyimage.thumbnail({
+//           src: 'image.jpg',
+//           dst: './image_thumbnail.jpg',
+//           width: 300,
+//           height: 300
+//         }, function(err, image){
+
+//           // UPLOAD IMAGE TO S3
+//           client.putFile('image_thumbnail.jpg', '/image_thumbnail.jpg', function(err, res){
+//             if(err){
+//               console.log(err);
+//             } else {
+//               console.log('thumbnail uploaded successfully');
+              
+//               // EXTRACT EXIF INFORMATION
+//               new ExifImage({image: 'image.jpg'}, function(error, image){
+//                 if(error){
+//                   console.log(error);
+//                 } else {
+
+//                   // CLEAN UP EXIF OBJECT BY REMOVING THE BUFFERS & TRANSFORMING THE ARRAYS INTO A HASH
+//                   var imageExif = {};
+//                   var globalKeys = ['image', 'exif', 'gps'];
+
+//                   _.each(globalKeys, function(globalKey){
+//                     _.each(image[globalKey], function(obj){
+
+//                       var keys = _.keys(obj);
+
+//                       _.each(keys, function(key){
+//                         if(Buffer.isBuffer(obj[key])){
+//                           delete obj[key];
+//                         }
+//                       });
+
+//                       imageExif[obj.tagName] = obj;
+//                       delete imageExif[obj.tagName].tagName;
+//                     });
+//                   });
+
+//                   fs.writeFileSync('image.json', JSON.stringify(imageExif), 'utf8');
+
+//                   console.log(imageExif);
+
+//                   // SAVE METADATA INTO THE DATABASE
+//                   // --> TODO
+
+//                 }
+//               });
+
+//               // EXTRACT EXIF WITH IMAGEMAGICK
+//               im.readMetadata('image.jpg', function(err, metadata){
+//                 if (err) throw err;
+//                 console.log(metadata.exif);
+//                 // console.log('Shot at '+metadata.exif.dateTimeOriginal);
+//               })
+              
+//             }
+//           });
+
+//         });
+
+
+//       }
 //     });
 //   }
 // });
-
-// FETCH IMAGE
-request({uri: 'http://24.media.tumblr.com/tumblr_m3qzl4kDe41r6f6iuo1_1280.jpg', encoding: 'binary'}, function(error, response, body){
-  if(error){
-    console.log(error);
-  } else {
-
-    // SAVE IMAGE TO DISK
-    fs.writeFile('image.jpg', body, "binary", function(err){
-      if(err){
-        console.log(err);
-      } else {
-        console.log('image saved to disk');
-
-        // CROP IMAGE
-        easyimage.thumbnail({
-          src: 'image.jpg',
-          dst: './image_thumbnail.jpg',
-          width: 300,
-          height: 300
-        }, function(err, image){
-
-          // UPLOAD IMAGE TO S3
-          client.putFile('image_thumbnail.jpg', '/image_thumbnail.jpg', function(err, res){
-            if(err){
-              console.log(err);
-            } else {
-              console.log('thumbnail uploaded successfully');
-              
-              // EXTRACT EXIF INFORMATION
-              new ExifImage({image: 'image.jpg'}, function(error, image){
-                if(error){
-                  console.log(error);
-                } else {
-
-                  // CLEAN UP EXIF OBJECT BY REMOVING THE BUFFERS & TRANSFORMING THE ARRAYS INTO A HASH
-                  var imageExif = {};
-                  var globalKeys = ['image', 'exif', 'gps'];
-
-                  _.each(globalKeys, function(globalKey){
-                    _.each(image[globalKey], function(obj){
-
-                      var keys = _.keys(obj);
-
-                      _.each(keys, function(key){
-                        if(Buffer.isBuffer(obj[key])){
-                          delete obj[key];
-                        }
-                      });
-
-                      imageExif[obj.tagName] = obj;
-                      delete imageExif[obj.tagName].tagName;
-                    });
-                  });
-
-                  fs.writeFileSync('image.json', JSON.stringify(imageExif), 'utf8');
-
-                  console.log(imageExif);
-
-                  // SAVE METADATA INTO THE DATABASE
-                  // --> TODO
-
-                }
-              });
-
-              // EXTRACT EXIF WITH IMAGEMAGICK
-              im.readMetadata('image.jpg', function(err, metadata){
-                if (err) throw err;
-                console.log(metadata.exif);
-                // console.log('Shot at '+metadata.exif.dateTimeOriginal);
-              })
-              
-            }
-          });
-
-        });
-
-
-      }
-    });
-  }
-});
