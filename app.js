@@ -1,5 +1,4 @@
 var express = require('express'),
-    mongodb = require('mongodb'),
     util = require('util'),
     events = require('events').EventEmitter,
     Worker = require('./lib/worker'),
@@ -12,20 +11,6 @@ var express = require('express'),
 
 util.inherits(Worker, events);
 var worker = new Worker(util, events);
-
-// ---
-// MongoDB Configuration
-// ---
-
-var items_collection = null;
-
-mongodb.connect(config.mongodb, function(err, connection){
-  connection.collection('items', function(err, collection){
-    items_collection = collection;
-    console.log('database connection established successfully.');
-  });
-});
-
 
 // ---
 // Tumblr Configuration
@@ -66,7 +51,6 @@ app.get('/', function(req, res) {
     worker.check_tumblr({
       request: req,
       response: res,
-      items_collection: items_collection,
       tumblog: tumblog
     });
   }
@@ -78,7 +62,6 @@ app.get('/check', function(req, res){
   worker.check_tumblr({
     request: req,
     response: res,
-    items_collection: items_collection,
     tumblog: tumblog
   });
 });
