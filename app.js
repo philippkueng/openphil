@@ -68,12 +68,6 @@ app.get('/check', function(req, res){
   });
 });
 
-app.get('/items_meta', function(req, res){
-  items_collection.find({}).count(function(err, coll_count){
-    res.send({count: coll_count});
-  });
-});
-
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
