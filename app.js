@@ -25,6 +25,8 @@ var tumblog = new Tumblr(config.tumblr.subdomain + '.tumblr.com', config.tumblr.
 var app = express.createServer(express.logger());
 
 app.configure(function(){
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'jade');
   app.use(express.methodOverride());
   app.use(express.bodyParser());
   app.use(app.router);
@@ -55,7 +57,7 @@ app.get('/', function(req, res) {
     });
   }
 
-  res.sendfile('public/index.html');
+  res.render('index', {});
 });
 
 app.get('/check', function(req, res){
