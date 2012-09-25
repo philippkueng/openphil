@@ -68,6 +68,13 @@ app.get('/check', function(req, res){
   });
 });
 
+app.get('/items_meta', function(req, res){
+  worker.items_meta({
+    request: req,
+    response: res
+  });
+});
+
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
