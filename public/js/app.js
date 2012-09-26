@@ -25,10 +25,10 @@
 				// .rangeBands([0, bar_width]);
 
 			var y = d3.scale.linear()
-				.domain([0, d3.max(data)])
-				// .domain([0, d3.max(weight_arr, function(entry){
-				// 	return parseFloat(entry.weight);
-				// })])
+				// .domain([0, d3.max(data)])
+				.domain([0, d3.max(weight_arr, function(entry){
+					return parseFloat(entry.weight) - 44;
+				})])
 				.range([0, height]);
 
 			var create_graph = function(){
@@ -53,7 +53,7 @@
 				chart
 					.selectAll('rect')
 					.data(weight_arr, function(d){
-						return parseFloat(d.weight);
+						return parseFloat(d.weight) - 44;
 					})
 					.enter()
 					.append('rect')
@@ -62,12 +62,12 @@
 						// return x(parseFloat(d.weight)) + 10;
 					})
 					.attr('y', function(d){
-						return height - y(parseFloat(d.weight));
+						return height - y(parseFloat(d.weight) - 44);
 					})
 					// .attr('width', x.rangeBand())
 					.attr('width', bar_width)
 					.attr('height', function(d){
-						return y(parseFloat(d.weight));
+						return y(parseFloat(d.weight) - 44);
 					});
 			};
 
