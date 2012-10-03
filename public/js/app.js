@@ -27,7 +27,7 @@
 			var y = d3.scale.linear()
 				// .domain([0, d3.max(data)])
 				.domain([0, d3.max(weight_arr, function(entry){
-					return parseFloat(entry.weight) - 44;
+					return parseFloat(entry.weight) - 43;
 				})])
 				.range([0, height]);
 
@@ -53,7 +53,7 @@
 				chart
 					.selectAll('rect')
 					.data(weight_arr, function(d){
-						return parseFloat(d.weight) - 44;
+						return parseFloat(d.weight) - 43;
 					})
 					.enter()
 					.append('rect')
@@ -62,12 +62,12 @@
 						// return x(parseFloat(d.weight)) + 10;
 					})
 					.attr('y', function(d){
-						return height - y(parseFloat(d.weight) - 44);
+						return height - y(parseFloat(d.weight) - 43);
 					})
 					// .attr('width', x.rangeBand())
 					.attr('width', bar_width)
 					.attr('height', function(d){
-						return y(parseFloat(d.weight) - 44);
+						return y(parseFloat(d.weight) - 43);
 					});
 			};
 
