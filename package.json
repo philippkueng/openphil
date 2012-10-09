@@ -19,7 +19,8 @@
     "tumblr": "0.0.4",
     "imagemagick": "0.1.2",
     "async": "0.1.22",
-    "jade": "0.27.4"
+    "jade": "0.27.4",
+    "moment": "1.7.2"
     },
   "devDependencies": {},
   "optionalDependencies": {}
