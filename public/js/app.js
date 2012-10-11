@@ -1,6 +1,8 @@
 (function($){
 	$(function(){
-		$.getJSON("/weight", function(weight_arr){
+		$.getJSON("/weight", function(response){
+
+			var weight_arr = response.weight;
 			// console.log(weight_arr);
 			var data = [4, 8, 15, 16, 23, 42.2, 23, 42, 23.5, 12, 31, 12, 34, 23, 54, 21, 29];
 
