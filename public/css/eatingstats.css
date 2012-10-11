@@ -7,11 +7,22 @@
   color: white;
 }*/
 
-#container{
+#container {
   margin: 40px auto;
   width: 800px;
 }
-.char line {
+
+#container>svg {
+  float: left;
+}
+
+rect {
+  stroke: white;
+  fill: steelblue;
+  shape-rendering: crispEdges;
+}
+
+line {
   shape-rendering: crispEdges;
 }
 .chart rect{
