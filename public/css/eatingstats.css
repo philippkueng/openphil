@@ -5,6 +5,7 @@ body {
 
 h1 {
   font-size: 2.857em;
+  padding-bottom: 0px;
 }
 
 p {
@@ -18,7 +19,12 @@ p {
 
 div.row {
   clear: left;
-  padding-bottom: 20px;
+  border-top: 1px solid #DDD;
+  padding-top: 30px;
+}
+
+#container div.row:first {
+  border-top: none;
 }
 
 div.row > div.graph {
@@ -26,8 +32,8 @@ div.row > div.graph {
 }
 
 div.row > div.description {
-  max-width: 230px;
-  margin-left: 20px;
+  max-width: 250px;
+  margin-left: 50px;
   float: left;
 }
 
@@ -40,6 +46,7 @@ rect {
 line {
   shape-rendering: crispEdges;
 }
+
 .chart rect{
   stroke: white;
   fill: steelblue;

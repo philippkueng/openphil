@@ -8,7 +8,7 @@
 			var dow_days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 			var dow_graph = function(){
-				var dow_width = 400;
+				var dow_width = 350;
 				var dow_height = 300;
 
 				var dow_chart = d3
@@ -45,10 +45,10 @@
 					.enter()
 					.append('rect')
 					.attr('x', function(d, i){
-						return i * (dow_width / 7) + 22;
+						return i * (dow_width / 7) + 18.5;
 					})
 					.attr('width', function(d, i){
-						return (dow_width / 7) - 44;
+						return (dow_width / 7) - 37.785714285714286;
 					})
 					.attr('y', function(d){
 						return dow_y(parseFloat(d.maximum));
@@ -103,7 +103,7 @@
 			var weight_arr = response.weight;
 
 			var weight_graph = function(){
-				var width = 380;
+				var width = 330;
 				var height = 220;
 
 				var bar_width = (width / weight_arr.length);
