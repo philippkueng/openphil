@@ -5,16 +5,18 @@
 			// DAY OF WEEK STATS GRAPH
 			var day_of_week = response.day_of_week;
 
+			var dow_days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 			var dow_graph = function(){
 				var dow_width = 400;
 				var dow_height = 300;
 
 				var dow_chart = d3
-					.select('#container')
+					.select('#diff_stats_container')
 					.append('svg')
 					.attr('class', 'dow')
 					.attr('width', dow_width)
-					.attr('height', dow_height);
+					.attr('height', dow_height + 40);
 
 				var dow_y = function(value){
 					if(value < 0){
@@ -78,6 +80,22 @@
 						return dow_y(parseFloat(d.average));
 					});
 
+				// insert weekday names
+				dow_chart
+					.selectAll('text')
+					.data(day_of_week, function(d){
+						return parseFloat(d.average);
+					})
+					.enter()
+					.append('text')
+					.attr('x', function(d, i){
+						return i * (dow_width / 7) + 18;
+					})
+					.attr('y', dow_height)
+					.text(function(d){
+						return dow_days[parseInt(d.day_of_week)];
+					});
+
 			}();
 
 
@@ -101,7 +119,7 @@
 					.range([0, height]);
 
 				var chart = d3
-					.select('#container')
+					.select('#weight_container')
 					.append('svg')
 					.attr('class', 'chart')
 					.attr('width', width + 20)

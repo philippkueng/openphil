@@ -1,18 +1,33 @@
-/*.chart div {
-  font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
-}*/
-
-#container {
-  margin: 40px auto;
-  width: 800px;
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.8607em;
 }
 
-#container>svg {
+h1 {
+  font-size: 2.857em;
+}
+
+p {
+  line-height: 1.5em;
+}
+
+#container {
+  margin: 20px auto;
+  max-width: 654px;
+}
+
+div.row {
+  clear: left;
+  padding-bottom: 20px;
+}
+
+div.row > div.graph {
+  float: left;
+}
+
+div.row > div.description {
+  max-width: 230px;
+  margin-left: 20px;
   float: left;
 }
 
@@ -29,21 +44,4 @@ line {
   stroke: white;
   fill: steelblue;
   shape-rendering: crispEdges;
-  /*fill: #35478C;*/
-/*  fill: url(../images/thumbnails/20_12939271197.jpg);*/
 }
-/*.chart rect.weight{
-  fill: #4E7AC7;
-}
-.chart text{
-  fill: white;
-}
-.chart text.rule{
-  fill: black;
-}
-.chart text.days{
-  fill: black;
-}
-.chart text.weight{
-  font-size: 9px;
-}*/
