@@ -31,9 +31,13 @@ div.row > div.graph {
   float: left;
 }
 
+#weight_container text {
+  font-size: 8px;
+}
+
 div.row > div.description {
   max-width: 250px;
-  margin-left: 50px;
+  margin-left: 40px;
   float: left;
 }
 

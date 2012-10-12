@@ -104,7 +104,7 @@
 
 			var weight_graph = function(){
 				var width = 330;
-				var height = 220;
+				var height = 200;
 
 				var bar_width = (width / weight_arr.length);
 
@@ -122,18 +122,35 @@
 					.select('#weight_container')
 					.append('svg')
 					.attr('class', 'chart')
-					.attr('width', width + 20)
-					.attr('height', 2 * height + 40);
+					.attr('width', width + 30)
+					.attr('height', height + 30);
 
-				// insert line
+				// weight lines
 				chart
-					.append("line")
-					.attr("x1", 10)
-					.attr("x2", width + 10)
-					.attr("y1", height + 10)
-					.attr("y2", height + 10)
-					.attr("stroke", "#000")
-					.attr("stroke-width", 2);
+					.selectAll('line')
+					.data(y.ticks(10))
+					.enter()
+					.append('line')
+					.attr('x1', 0)
+					.attr('x2', width + 30)
+					.attr('y1', y)
+					.attr('y2', y)
+					.style('stroke', '#000');
+
+				// weight lines markers
+				chart
+					.selectAll(".weight_markers")
+					.data(y.ticks(10))
+					.enter()
+					.append('text')
+					.attr('class', 'weight_markers')
+					.attr('x', 0)
+					.attr('y', function(d){
+						return height - y(d) - 3;
+					})
+					.text(function(d){
+						return (parseFloat(d) + 43) + ' kg';
+					});
 
 				// insert the bars
 				chart
@@ -144,7 +161,7 @@
 					.enter()
 					.append('rect')
 					.attr('x', function(d, i){
-						return x(i) + 10;
+						return x(i) + 30;
 					})
 					.attr('y', function(d){
 						return height - y(parseFloat(d.weight) - 43);
@@ -153,6 +170,41 @@
 					.attr('height', function(d){
 						return y(parseFloat(d.weight) - 43);
 					});
+
+				// date markers
+				chart
+					.selectAll('text')
+					.data(weight_arr, function(d){
+						return parseFloat(d.weight) - 43;
+					})
+					.enter()
+					.append('text')
+					.attr('x', function(d, i){
+						return x(i) + 30;
+					})
+					.attr('y', height + 10)
+					.attr('dx', 3)
+					.text(function(d, i){
+						var date = moment(d.date);
+						return date.date();
+						// return i;
+					});
+
+				// lower cover line
+				chart
+					.append('line')
+					.attr('x1', 0)
+					.attr('x2', width + 30)
+					.attr('y1', height)
+					.attr('y2', height)
+					.style('stroke', '#000');
+
+				// upper cover line
+				chart
+					.append('line')
+					.attr('x1', 0)
+					.attr('x2', width + 30)
+					.style('stroke', '#fff');
 
 			}();
 		});
