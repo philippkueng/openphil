@@ -183,11 +183,29 @@
 						return x(i) + 30;
 					})
 					.attr('y', height + 10)
-					.attr('dx', 3)
+					.attr('dx', 2)
 					.text(function(d, i){
 						var date = moment(d.date);
 						return date.date();
 						// return i;
+					});
+
+				// month markers
+				chart
+					.selectAll('text.month')
+					.data(weight_arr, function(d){
+						return parseFloat(d.weight);
+					})
+					.enter()
+					.append('text')
+					.attr('x', function(d, i){
+						return x(i) + 30;
+					})
+					.attr('y', height + 20)
+					.attr('dx', 2)
+					.text(function(d, i){
+						var date = moment(d.date);
+						return date.month() + 1;
 					});
 
 				// lower cover line
@@ -205,6 +223,20 @@
 					.attr('x1', 0)
 					.attr('x2', width + 30)
 					.style('stroke', '#fff');
+
+				// insert date marker
+				chart
+					.append('text')
+					.attr('x', 0)
+					.attr('y', height + 10)
+					.text('Day');
+
+				// insert month marker
+				chart
+					.append('text')
+					.attr('x', 0)
+					.attr('y', height + 20)
+					.text('Month');
 
 			}();
 		});
