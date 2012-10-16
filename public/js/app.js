@@ -27,14 +27,30 @@
 					.domain([1.5, -1.5])
 					.range([0, (dow_height)]);
 
+				// insert kg lines
+				dow_chart
+					.selectAll('line')
+					.data(y.ticks(10))
+					.enter()
+					.append('line')
+					.attr('x1', 0)
+					.attr('x2', dow_width)
+					.attr('y1', y)
+					.attr('y2', y)
+					.style('stroke', '#DDD');
+
 				// insert line
 				dow_chart
 					.append('line')
 					.attr('x1', 0)
 					.attr('x2', dow_width)
-					.attr('y1', (dow_height/2) - 1)
-					.attr('y2', (dow_height/2) - 1)
-					.attr('stroke', '#DDD')
+					.attr('y1', function(d, i){
+						return y(0);
+					})
+					.attr('y2', function(d, i){
+						return y(0);
+					})
+					.attr('stroke', '#999')
 					.attr('stroke-width', 2);
 
 				// insert min-max diff-blocks
