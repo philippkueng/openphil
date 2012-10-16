@@ -31,6 +31,10 @@ div.row > div.graph {
   float: left;
 }
 
+text.marker {
+  font-size: 8px;
+}
+
 #weight_container text {
   font-size: 8px;
 }

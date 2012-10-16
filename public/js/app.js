@@ -37,7 +37,7 @@
 					.attr('x2', dow_width + 30)
 					.attr('y1', y)
 					.attr('y2', y)
-					.style('stroke', '#DDD');
+					.style('stroke', '#999');
 
 				// insert kg-line markers
 				dow_chart
@@ -45,8 +45,11 @@
 					.data(y.ticks(10))
 					.enter()
 					.append('text')
+					.attr('class', 'marker')
 					.attr('x', 0)
-					.attr('y', y)
+					.attr('y', function(i){
+						return y(i) - 3;
+					})
 					.text(function(d){
 						return d + ' kg';
 					});
@@ -84,6 +87,7 @@
 						return (d.maximum + (d.minimum * -1)) * 100;
 					});
 
+				// insert weight averages
 				dow_chart
 					.selectAll('line.average')
 					.data(day_of_week, function(d){
@@ -121,6 +125,16 @@
 					.text(function(d){
 						return dow_days[parseInt(d.day_of_week)];
 					});
+
+				// remove top weight line
+				dow_chart
+					.append('line')
+					.attr('x1', 0)
+					.attr('x2', dow_width + 30)
+					.attr('y1', 0)
+					.attr('y2', 0)
+					.attr('stroke', '#fff')
+					.attr('stroke-width', 1);
 
 			}();
 
