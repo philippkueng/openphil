@@ -10,6 +10,7 @@
 			var dow_graph = function(){
 				var dow_width = 350;
 				var dow_height = 300;
+				var bar_width = 11.785714285714286;
 
 				var dow_chart = d3
 					.select('#diff_stats_container')
@@ -18,13 +19,13 @@
 					.attr('width', dow_width)
 					.attr('height', dow_height + 40);
 
-				var dow_y = function(value){
-					if(value < 0){
-						return 150 + (value * -100);
-					} else {
-						return 150 - (value * 100);
-					}
-				};
+				var x = d3.scale.linear()
+					.domain([0,1])
+					.range([0, (dow_width / 7)]);
+
+				var y = d3.scale.linear()
+					.domain([1.5, -1.5])
+					.range([0, (dow_height)]);
 
 				// insert line
 				dow_chart
@@ -36,48 +37,45 @@
 					.attr('stroke', '#DDD')
 					.attr('stroke-width', 2);
 
-				// insert 'min-max' weight-diff blocks
+				// insert min-max diff-blocks
 				dow_chart
 					.selectAll('rect')
 					.data(day_of_week, function(d){
-						return d;
+						return d.average;
 					})
 					.enter()
 					.append('rect')
 					.attr('x', function(d, i){
-						return i * (dow_width / 7) + 18.5;
-					})
-					.attr('width', function(d, i){
-						return (dow_width / 7) - 37.785714285714286;
+						return x(i) + 18;
 					})
 					.attr('y', function(d){
-						return dow_y(parseFloat(d.maximum));
+						return y(d.maximum);
 					})
+					.attr('width', bar_width)
 					.attr('height', function(d){
-						return (parseFloat(d.maximum) - parseFloat(d.minimum)) * 100;
+						return (d.maximum + (d.minimum * -1)) * 100;
 					});
 
-				// insert 'average' bars
 				dow_chart
 					.selectAll('line.average')
 					.data(day_of_week, function(d){
-						return parseFloat(d.average);
+						return d.average;
 					})
 					.enter()
 					.append('line')
 					.attr('stroke', '#000')
 					.attr('stroke-width', 2)
 					.attr('x1', function(d, i){
-						return i * (dow_width / 7) + 18;
+						return x(i) + 16;
 					})
 					.attr('x2', function(d, i){
-						return (i + 1) * (dow_width / 7) - 18;
+						return x(i) + 16 + bar_width + 4;
 					})
-					.attr('y1', function(d){
-						return dow_y(parseFloat(d.average));
+					.attr('y1', function(d, i){
+						return y(d.average);
 					})
-					.attr('y2', function(d){
-						return dow_y(parseFloat(d.average));
+					.attr('y2', function(d, i){
+						return y(d.average);
 					});
 
 				// insert weekday names
