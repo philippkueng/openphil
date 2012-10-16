@@ -8,7 +8,7 @@
 			var dow_days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 			var dow_graph = function(){
-				var dow_width = 350;
+				var dow_width = 330;
 				var dow_height = 300;
 				var bar_width = 11.785714285714286;
 
@@ -16,7 +16,7 @@
 					.select('#diff_stats_container')
 					.append('svg')
 					.attr('class', 'dow')
-					.attr('width', dow_width)
+					.attr('width', dow_width + 30)
 					.attr('height', dow_height + 40);
 
 				var x = d3.scale.linear()
@@ -34,16 +34,28 @@
 					.enter()
 					.append('line')
 					.attr('x1', 0)
-					.attr('x2', dow_width)
+					.attr('x2', dow_width + 30)
 					.attr('y1', y)
 					.attr('y2', y)
 					.style('stroke', '#DDD');
+
+				// insert kg-line markers
+				dow_chart
+					.selectAll('text')
+					.data(y.ticks(10))
+					.enter()
+					.append('text')
+					.attr('x', 0)
+					.attr('y', y)
+					.text(function(d){
+						return d + ' kg';
+					});
 
 				// insert line
 				dow_chart
 					.append('line')
 					.attr('x1', 0)
-					.attr('x2', dow_width)
+					.attr('x2', dow_width + 30)
 					.attr('y1', function(d, i){
 						return y(0);
 					})
@@ -62,7 +74,7 @@
 					.enter()
 					.append('rect')
 					.attr('x', function(d, i){
-						return x(i) + 18;
+						return x(i) + 28 + 30;
 					})
 					.attr('y', function(d){
 						return y(d.maximum);
@@ -82,10 +94,10 @@
 					.attr('stroke', '#000')
 					.attr('stroke-width', 2)
 					.attr('x1', function(d, i){
-						return x(i) + 16;
+						return x(i) + 26 + 30;
 					})
 					.attr('x2', function(d, i){
-						return x(i) + 16 + bar_width + 4;
+						return x(i) + 26 + bar_width + 4 + 30;
 					})
 					.attr('y1', function(d, i){
 						return y(d.average);
@@ -103,9 +115,9 @@
 					.enter()
 					.append('text')
 					.attr('x', function(d, i){
-						return i * (dow_width / 7) + 18;
+						return i * (dow_width / 7) + 18 + 30;
 					})
-					.attr('y', dow_height)
+					.attr('y', dow_height + 20)
 					.text(function(d){
 						return dow_days[parseInt(d.day_of_week)];
 					});
