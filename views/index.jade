@@ -1,16 +1,23 @@
 h1 #openphil
 
 div.row
-	#diff_stats_container.graph
-
-	div.description
-		h2 Weight differences
-		p After collecting the data, the weight differences from one day to the next will be calculated and stacked by the day of week they have been collected.
-		p The blue bars are showing the spreading of differences while the short black bars mark the average delta.
-
-div.row
 	#weight_container.graph
 
 	div.description
 		h2 Last 28 days
-		p The graph is showing the actual weight measurements of the last 28 days.
+		p On the left you can see the 
+			a(href='http://eatingstats.tumblr.com/tagged/weight') weight measurements
+			|  for just the last 28 days. However I have been collecting those measurements since November 17th 2011. Hoping to get some insights out of them to finally gain weight. 
+		p In case you are wondering what it is I am consuming each day, have a look at 
+			a(href='http://eatingstats.tumblr.com') eatingstats.tumblr.com
+			|  and scroll through the wall of images.
+
+div.row
+	#diff_stats_container.graph
+
+	div.description
+		h2 Weight differences
+		p After collecting the data, the script calculates the weight differences from one day to the next, based on all collected values so far, and then applies a bucket sort to stack them by day of the week.
+		p The blue bars are showing the spreading of maximum and minimum differences while the short black bars mark the average delta.
+		p As you can see, there is quite a bit of improvment potential for thursday.
+
