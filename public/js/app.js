@@ -5,7 +5,8 @@
 			// DAY OF WEEK STATS GRAPH
 			var day_of_week = response.day_of_week;
 
-			var dow_days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+			// var dow_days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+			var dow_days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 			var dow_graph = function(){
 				var dow_width = 330;
@@ -118,10 +119,11 @@
 					})
 					.enter()
 					.append('text')
+					.attr('class', 'marker')
 					.attr('x', function(d, i){
-						return i * (dow_width / 7) + 18 + 30;
+						return i * (dow_width / 7) + 14 + 30;
 					})
-					.attr('y', dow_height + 20)
+					.attr('y', dow_height - 3)
 					.text(function(d){
 						return dow_days[parseInt(d.day_of_week)];
 					});
