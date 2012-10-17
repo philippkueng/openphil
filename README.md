@@ -1,4 +1,4 @@
-# eating stats
+# #openphil
 
 a very personal hackday project
 
