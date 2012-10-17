@@ -17,7 +17,7 @@
 					.append('svg')
 					.attr('class', 'dow')
 					.attr('width', dow_width + 30)
-					.attr('height', dow_height + 40);
+					.attr('height', dow_height + 70);
 
 				var x = d3.scale.linear()
 					.domain([0,1])
@@ -77,7 +77,7 @@
 					.enter()
 					.append('rect')
 					.attr('x', function(d, i){
-						return x(i) + 28 + 30;
+						return x(i) + 23 + 30;
 					})
 					.attr('y', function(d){
 						return y(d.maximum);
@@ -98,10 +98,10 @@
 					.attr('stroke', '#000')
 					.attr('stroke-width', 2)
 					.attr('x1', function(d, i){
-						return x(i) + 26 + 30;
+						return x(i) + 21 + 30;
 					})
 					.attr('x2', function(d, i){
-						return x(i) + 26 + bar_width + 4 + 30;
+						return x(i) + 21 + bar_width + 4 + 30;
 					})
 					.attr('y1', function(d, i){
 						return y(d.average);
@@ -163,7 +163,7 @@
 					.append('svg')
 					.attr('class', 'chart')
 					.attr('width', width + 30)
-					.attr('height', height + 30);
+					.attr('height', height + 70);
 
 				// weight lines
 				chart
