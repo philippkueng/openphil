@@ -1,11 +1,15 @@
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 0.8607em;
+  font: 13px/1.231 helvetica,arial,clean,sans-serif;
 }
 
 h1 {
   font-size: 2.857em;
   padding-bottom: 0px;
+}
+
+h2 {
+  font-size: 153.9%;
+  line-height: 1;
 }
 
 p {
