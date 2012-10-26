@@ -170,7 +170,7 @@
 				// weight lines
 				chart
 					.selectAll('line')
-					.data(y.ticks(10))
+					.data(y.ticks(6))
 					.enter()
 					.append('line')
 					.attr('x1', 0)
@@ -182,7 +182,7 @@
 				// weight lines markers
 				chart
 					.selectAll(".weight_markers")
-					.data(y.ticks(10))
+					.data(y.ticks(6))
 					.enter()
 					.append('text')
 					.attr('class', 'weight_markers')
