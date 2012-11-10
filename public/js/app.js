@@ -156,7 +156,7 @@
 
 				var y = d3.scale.linear()
 					.domain([0, d3.max(weight_arr, function(entry){
-						return parseFloat(entry.weight) - 43;
+						return parseFloat(entry.weight) - 42;
 					})])
 					.range([0, height]);
 
@@ -191,14 +191,14 @@
 						return height - y(d) - 3;
 					})
 					.text(function(d){
-						return (parseFloat(d) + 43) + ' kg';
+						return (parseFloat(d) + 42) + ' kg';
 					});
 
 				// insert the bars
 				chart
 					.selectAll('rect')
 					.data(weight_arr, function(d){
-						return parseFloat(d.weight) - 43;
+						return parseFloat(d.weight) - 42;
 					})
 					.enter()
 					.append('rect')
@@ -206,18 +206,18 @@
 						return x(i) + 30;
 					})
 					.attr('y', function(d){
-						return height - y(parseFloat(d.weight) - 43);
+						return height - y(parseFloat(d.weight) - 42);
 					})
 					.attr('width', bar_width)
 					.attr('height', function(d){
-						return y(parseFloat(d.weight) - 43);
+						return y(parseFloat(d.weight) - 42);
 					});
 
 				// date markers
 				chart
 					.selectAll('text')
 					.data(weight_arr, function(d){
-						return parseFloat(d.weight) - 43;
+						return parseFloat(d.weight) - 42;
 					})
 					.enter()
 					.append('text')
