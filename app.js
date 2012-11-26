@@ -13,17 +13,6 @@ util.inherits(Worker, events);
 var worker = new Worker(util, events);
 
 // ---
-// Nodefly
-// ---
-
-require('nodefly').profile(
-  config.nodefly,
-  'openphil',
-  {
-    blockThreshold: 10
-  });
-
-// ---
 // Tumblr Configuration
 // ---
 
