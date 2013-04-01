@@ -1,3 +1,6 @@
 .DS_Store
 config.js
+sample_config.js
 node_modules/
+venv/
+*.csv

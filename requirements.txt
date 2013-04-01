@@ -1,0 +1,7 @@
+flickrapi==1.4.2
+oauthlib==0.4.0
+python-tumblpy==0.7.1
+requests==1.0.4
+requests-oauthlib==0.3.0
+simplejson==3.1.2
+wsgiref==0.1.2

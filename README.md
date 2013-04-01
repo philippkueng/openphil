@@ -2,6 +2,13 @@
 
 a very personal hackday project
 
+# Setup (Python part)
+
+	virtualenv venv
+	source venv/bin/activate
+	pip install -r requirements
+	python fetch.py
+
 # License (MIT)
 
 Copyright (C) 2012 Philipp Küng
